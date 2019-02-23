@@ -1,6 +1,6 @@
 # PATRICK TUMULTY
 # Fed 23, 2019
-
+import numpy as np
 import math
 
 
