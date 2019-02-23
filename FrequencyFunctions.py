@@ -1,8 +1,7 @@
-import numpy as np
+# PATRICK TUMULTY
+# Fed 23, 2019
+
 import math
-from scipy.io.wavfile import write
-import matplotlib.pyplot as plt
-from random import*
 
 
 def Create12TETChromatic(frequency):
@@ -29,55 +28,6 @@ def TETChromaticScale(frequency, octaveDivider):
     scale = np.insert(scale, 0, frequency)
     return scale
 
-
-def sinWavGen(frequency, duration):
-    """ Creates a sin wave with a given frequency and a duration (in seconds). returns an array"""
-    sampleRate = 44100
-    twoPi = 2 * math.pi
-    sampleRate *= duration    # is in seconds
-    timeArray = np.arange(sampleRate)
-    digiPeriod = 1 / sampleRate
-    sinArray = np.array([])
-    for i in range(len(timeArray)):
-        t = i * digiPeriod              # t effects how long our pitch is. Changing the sampleRate will change dur.
-        wav = np.sin(twoPi * (frequency * t))
-        sinArray = np.append(sinArray, wav)
-    return sinArray
-
-
-def WriteScale(pitchArray, noteDur):
-    """Takes an array of pitches, as well as a note duration (in seconds) and arranges them into a
-    chromatic scale using a sin tone. Returns an array"""
-    i = 0
-    sound = np.array([])
-    print(len(pitchArray))
-    while i < len(pitchArray):
-        pitch = sinWavGen(pitchArray[i], noteDur)
-        sound = np.append(sound, pitch)
-        i += 1
-    return sound
-
-
-def RandMelody(pitchArray, noteDur):
-    """Takes an array of pitches, as well as a note duration (in seconds) and arranges them into a
-    random melody using a sin tone. Returns an array"""
-    i = 0
-    sound = np.array([])
-    print(len(pitchArray))
-    while i < (len(pitchArray)-1):
-        rand = randint(0, len(pitchArray)-1)
-        pitch = sinWavGen(pitchArray[rand], noteDur)
-        sound = np.append(sound, pitch)
-        i += 1
-    return sound
-
-
-def write2wav(sinArray):
-    """Scales your array to values between 1 and 0 and converts it to a 16 bit int. Write
-    a wav file of that data"""
-    sampleRate = 44100
-    scaled = np.int16(sinArray / np.max(np.abs(sinArray)) * 32767)
-    write("ChromaticScale.wav", sampleRate, scaled)
 
 # Functions used TETMajScale
 
@@ -120,15 +70,128 @@ def TETMajScale(frequency, octaveDivider):
         newScale = np.append(newScale, freq)
     return newScale
 
+
+def genBlock(frequencyArray, chordNum):
+    """Takes in an 8 value frequency array and a chord number (1-8)
+    return frequencies within key"""
+    Melody = ["m"] #4 notes played at random over chords, up one octave
+    Chord = ["c"] #3 notes root third fifth, inversions keep chords in one octave
+    Bass = ["b"] #2 notes down octave 
+    SendValues = [] #empty list to append melody, chord, and bass to
+    if chordNum == 1:
+        mOne = (0, 2, 4, 6)
+        cOne = (0, 2, 4)
+        bOne = (0, 4)
+        for item in mOne:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cOne:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bOne:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    if chordNum == 2:
+        mTwo = (1, 3, 5, 7)
+        cTwo = (1, 3, 5)
+        bTwo = (1, 5)
+        for item in mTwo:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cTwo:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bTwo:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    if chordNum == 3:
+        mThree = (2, 4, 6, 1)
+        cThree = (2, 4, 6)
+        bthree = (2, 6)
+        for item in mThree:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cThree:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bthree:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    if chordNum == 4:
+        mFour = (3, 5, 7, 2)
+        cFour = (3, 5, 7)
+        bFour = (3, 7)
+        for item in mFour:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cFour:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bFour:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    if chordNum == 5:
+        mFive = (4, 6, 1, 3)
+        cFive = (4, 6, 1)
+        bFive = (4, 1)
+        for item in mFive:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cFive:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bFive:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    if chordNum == 6:
+        mSix = (5, 7, 2, 4)
+        cSix = (5, 7, 2)
+        bSix = (5, 2)
+        for item in mSix:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cSix:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bSix:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    if chordNum == 7:
+        mSev = (6, 1, 3, 5)
+        cSev = (6, 1, 3)
+        bSev = (6, 3)
+        for item in mSev:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cSev:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bSev:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    if chordNum == 8:
+        mOct = (7, 2, 4, 6)
+        cOct = (7, 2, 4)
+        bOct = (0, 4)
+        for item in mOct:
+            note = frequencyArray[item] * 2
+            Melody.append(note)
+        for item in cOct:
+            note = frequencyArray[item]
+            Chord.append(note)
+        for item in bOct:
+            note = frequencyArray[item] / 2
+            Bass.append(note)
+    SendValues.append(Melody)
+    SendValues.append(Chord)
+    SendValues.append(Bass)
+    return SendValues
+  
 # ----------------------------
 
 
-a = Create12TETChromatic(220)
-b = WriteScale(a, 0.2)
-write2wav(b)
 
-#a = TETMajScale(440, 13)
-#b = WriteScale(a, 0.2)
-#write2wav(b)
+
+
 
 
