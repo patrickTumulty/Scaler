@@ -7,7 +7,7 @@ import tkinter.messagebox
 
 # ---------- instantiate our window ------------------
 
-#root = Tk()
+root = Tk()
 root.title("TemperMental")
 root.resizable(width=False, height=False)
 
@@ -103,13 +103,13 @@ def addToList():
         
 # --------- Tkinter Widgets ---------------------------
 
-ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean")
+ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean", width=10)
 freqLabel =     Label(inputFrame, text="Frequency:")
 scaleLabel =    Label(inputFrame, text="Choose Scale:")
 numEntry =      Entry(inputFrame, width=10)
 OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
 showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
-status = Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
+status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
 
 one =   Button(chordButtons, text="I", width=8, height=3).grid(row=0, column=0)
 two =   Button(chordButtons, text="II", width=8, height=3).grid(row=0, column=1)
