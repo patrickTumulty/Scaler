@@ -4,7 +4,6 @@ import random
 
 # PATRICK TUMULTY
 # Last Updated: Fed 28, 2019
- 
 
 def Create12TETChromatic(frequency):
     """creates a 12 tone even tempered scale with any starting pitch. returns an array"""
@@ -82,7 +81,7 @@ def SecondLoop(frequency, newTET):
         minimum = min(absList)
     location = absList.index(minimum)
     return newTET[location]
-
+    
 
 def TETMajScale(frequency, octaveDivider):
     """Cross references a traditional major scale with a new TET chromatic scale.
@@ -260,12 +259,15 @@ def CompAlgorithm(frequencyArray):
 #CompAlgorithm(440)
 
 
-a = Create12TETChromatic(440)
-b = StandardMajScale(a)
-c = TETMajScale(440, 9)
-d = calculateCents(b, c)
+# a = Create12TETChromatic(440)
+# b = StandardMajScale(a)
+# c = TETMajScale(440, 9)
+# d = calculateCents(b, c)
 
-c = genBlock(b, 5) #the scale i created above and the fifth chord in the scale
-print(c)
+# c = genBlock(b, 5) #the scale i created above and the fifth chord in the scale
+# print(c)
+
+
+
 
 

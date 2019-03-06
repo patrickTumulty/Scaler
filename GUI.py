@@ -103,7 +103,7 @@ def addToList():
         
 # --------- Tkinter Widgets ---------------------------
 
-ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean", width=10)
+ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean")
 freqLabel =     Label(inputFrame, text="Frequency:")
 scaleLabel =    Label(inputFrame, text="Choose Scale:")
 numEntry =      Entry(inputFrame, width=10)
@@ -111,18 +111,18 @@ OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
 showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
 status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
 
-one =   Button(chordButtons, text="I", width=8, height=3).grid(row=0, column=0)
-two =   Button(chordButtons, text="II", width=8, height=3).grid(row=0, column=1)
-three = Button(chordButtons, text="III", width=8, height=3).grid(row=0, column=2)
-four =  Button(chordButtons, text="IV", width=8, height=3).grid(row=0, column=3)
-five =  Button(chordButtons, text="V", width=8, height=3).grid(row=1, column=0)
-six =   Button(chordButtons, text="VI", width=8, height=3).grid(row=1, column=1)
-seven = Button(chordButtons, text="VII", width=8, height=3).grid(row=1, column=2)
-eight = Button(chordButtons, text="VIII", width=8, height=3).grid(row=1, column=3)
+one =   Button(chordButtons, text="I", width=8, height=3)
+two =   Button(chordButtons, text="II", width=8, height=3)
+three = Button(chordButtons, text="III", width=8, height=3)
+four =  Button(chordButtons, text="IV", width=8, height=3)
+five =  Button(chordButtons, text="V", width=8, height=3)
+six =   Button(chordButtons, text="VI", width=8, height=3)
+seven = Button(chordButtons, text="VII", width=8, height=3)
+eight = Button(chordButtons, text="VIII", width=8, height=3)
 
-soloMajor = Radiobutton(sendOptions, text="12 TET", variable=v, value=1).pack(side=LEFT)
-soloNew = Radiobutton(sendOptions, text="New Scale", variable=v, value=2).pack(side=LEFT)
-Both = Radiobutton(sendOptions, text="Both", variable=v, value=3).pack(side=LEFT)
+soloMajor = Radiobutton(sendOptions, text="12 TET", variable=v, value=1)
+soloNew = Radiobutton(sendOptions, text="New Scale", variable=v, value=2)
+Both = Radiobutton(sendOptions, text="Both", variable=v, value=3)
 
 majScale = Listbox(freqList, width=10)
 newScale = Listbox(freqList, width=10)
@@ -137,6 +137,19 @@ numEntry.grid(row=1, column=1)
 OctaveDivider.grid(row=3, column=1)
 ScaleOption.grid(row=2, column=1)
 status.pack(side=BOTTOM, fill=X)
+
+one.grid(row=0, column=0)
+two.grid(row=0, column=1)
+three.grid(row=0, column=2)
+four.grid(row=0, column=3)
+five.grid(row=1, column=0)
+six.grid(row=1, column=1)
+seven.grid(row=1, column=2)
+eight.grid(row=1, column=3)
+
+soloMajor.pack(side=LEFT)
+soloNew.pack(side=LEFT)
+Both.pack(side=LEFT)
 
 # ---------------------- Frequency Scales --------------
 
