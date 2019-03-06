@@ -33,7 +33,7 @@ class pyfreq():
     def StandardMajScale(self, frequency):
         """Takes one arguement, frequency. Returns an array of 8 frequencies from 12 TET chromatic scale"""
         EightSteps = np.array([])
-        freqArray = Create12TETChromatic(frequency)
+        freqArray = pyfreq().Create12TETChromatic(frequency)
         steps = (0, 2, 4, 5, 7, 9, 11, 12)
         for i in steps:
             scale = freqArray[i]
@@ -82,11 +82,11 @@ class pyfreq():
     def TETMajScale(self, frequency, octaveDivider):
         """Cross references a traditional major scale with a new TET chromatic scale.
         Returns an array of 8 frequencies."""
-        standard = StandardMajScale(frequency)
-        newTET = TETChromaticScale(frequency, octaveDivider)
+        standard = pyfreq().StandardMajScale(frequency)
+        newTET = pyfreq().TETChromaticScale(frequency, octaveDivider)
         newScale = np.array([])
         for i in range(len(standard)):
-            freq = SecondLoop(standard[i], newTET)
+            freq = pyfreq().SecondLoop(standard[i], newTET)
             newScale = np.append(newScale, freq)
         return newScale
 
@@ -210,7 +210,7 @@ class pyfreq():
     def CompAlgorithm(self, frequencyArray):
         loop = 0
         for i in range(8):
-            block = genBlock(frequencyArray, (i + 1))
+            block = pyfreq().genBlock(frequencyArray, (i + 1))
             if i == 0:
                 one = block
             if i == 1:

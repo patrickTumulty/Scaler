@@ -19,7 +19,7 @@ def Create12TETChromatic(frequency):
 
 def TETChromaticScale(frequency, octaveDivider):
     """creates an even tempered scale with a given starting frequency and a number for how many divisions you want the
-    octave to be diveded into. Returns an Array"""
+    octave to be divided into. Returns an Array"""
     i = 0
     scale = np.array([])
     while i < octaveDivider:
@@ -81,7 +81,7 @@ def SecondLoop(frequency, newTET):
         minimum = min(absList)
     location = absList.index(minimum)
     return newTET[location]
-    
+
 
 def TETMajScale(frequency, octaveDivider):
     """Cross references a traditional major scale with a new TET chromatic scale.
@@ -213,6 +213,7 @@ def genBlock(frequencyArray, chordNum):
 
 
 def CompAlgorithm(frequencyArray):
+    """Takes a frequency array and returns a random order of blocks from genBlock()"""
     loop = 0
     for i in range(8):
         block = genBlock(frequencyArray, (i + 1))

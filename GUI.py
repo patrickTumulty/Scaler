@@ -106,6 +106,10 @@ def addToList():
 ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean")
 freqLabel =     Label(inputFrame, text="Frequency:")
 scaleLabel =    Label(inputFrame, text="Choose Scale:")
+freqColumn =    Label(freqList, text="Major Scale")
+newColumn =     Label(freqList, text="New Scale")
+centsColumn =   Label(freqList, text="Cents")
+
 numEntry =      Entry(inputFrame, width=10)
 OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
 showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
@@ -121,8 +125,8 @@ seven = Button(chordButtons, text="VII", width=8, height=3)
 eight = Button(chordButtons, text="VIII", width=8, height=3)
 
 soloMajor = Radiobutton(sendOptions, text="12 TET", variable=v, value=1)
-soloNew = Radiobutton(sendOptions, text="New Scale", variable=v, value=2)
-Both = Radiobutton(sendOptions, text="Both", variable=v, value=3)
+soloNew =   Radiobutton(sendOptions, text="New Scale", variable=v, value=2)
+Both =      Radiobutton(sendOptions, text="Both", variable=v, value=3)
 
 majScale = Listbox(freqList, width=10)
 newScale = Listbox(freqList, width=10)
@@ -153,9 +157,13 @@ Both.pack(side=LEFT)
 
 # ---------------------- Frequency Scales --------------
 
-majScale.pack(side=LEFT, padx=5)
-newScale.pack(side=LEFT, padx=5)
-centsOff.pack(side=LEFT, padx=5)
+freqColumn.grid(row=0, column=0, padx = 5)
+newColumn.grid(row=0, column=1, padx = 5)
+centsColumn.grid(row=0, column=2, padx = 5)
+
+majScale.grid(row=1, column=0, padx = 5)
+newScale.grid(row=1, column=1, padx = 5)
+centsOff.grid(row=1, column=2, padx = 5)
 
 
 root.mainloop() 
