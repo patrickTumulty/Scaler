@@ -40,7 +40,7 @@ class pyfreq():
             EightSteps = np.append(EightSteps, scale)
         return EightSteps
 
-    def JustScale(self, frequency):
+    def JustScale(frequency):
         """Takes in a frequency. Returns an array of 8 frequencies in the Just scale"""
         EightSteps = []
         ratios = [1, (9/8), (5/4), (4/3), (3/2), (5/3), (15/8), 2]
