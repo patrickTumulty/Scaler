@@ -250,7 +250,7 @@ def CompAlgorithm(frequencyArray):
         elif val == 7:
             print(sev) 
         elif val == 8:
-            print(octave) 
+            print(octave, "Eight") 
         loop += 1
 
     

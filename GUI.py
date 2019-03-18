@@ -13,10 +13,10 @@ root.resizable(width=False, height=False)
 
 # ---------- window frames ----------------------------
 
-inputFrame = Frame(root)
-freqList = Frame(root)
-chordButtons = Frame(root)
-sendOptions = Frame(root)
+inputFrame =    Frame(root)
+freqList =      Frame(root)
+chordButtons =  Frame(root)
+sendOptions =   Frame(root)
 
 # ---------- window frame .pack ------------------------
 
