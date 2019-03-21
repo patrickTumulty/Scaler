@@ -8,12 +8,12 @@ import random
 def Create12TETChromatic(frequency):
     """creates a 12 tone even tempered scale with any starting pitch. returns an array"""
     i = 0
-    scale = np.array([])
+    scale = []
     while i < 12:
         i += 1
         note = round(frequency * (2**(i/12)), 2)      # divides octave into 12 even pitches
-        scale = np.append(scale, note)      # adds pitches to an array
-    scale = np.insert(scale, 0, frequency)  # adds starting pitch to our scale
+        scale.append(note)      # adds pitches to an array
+    scale = [frequency] + scale # adds starting pitch to our scale
     return scale
 
 
@@ -21,12 +21,12 @@ def TETChromaticScale(frequency, octaveDivider):
     """creates an even tempered scale with a given starting frequency and a number for how many divisions you want the
     octave to be divided into. Returns an Array"""
     i = 0
-    scale = np.array([])
+    scale = []
     while i < octaveDivider:
         i += 1
         note = round(frequency * (2**(i/octaveDivider)), 2)
-        scale = np.append(scale, note)
-    scale = np.insert(scale, 0, frequency)
+        scale.append(note)
+    scale = [frequency] + scale
     return scale
 
 
@@ -88,10 +88,10 @@ def TETMajScale(frequency, octaveDivider):
     Returns an array of 8 frequencies."""
     standard = StandardMajScale(frequency)
     newTET = TETChromaticScale(frequency, octaveDivider)
-    newScale = np.array([])
+    newScale = []
     for i in range(len(standard)):
         freq = SecondLoop(standard[i], newTET)
-        newScale = np.append(newScale, freq)
+        newScale.append(freq)
     return newScale
 
 
@@ -259,7 +259,8 @@ def CompAlgorithm(frequencyArray):
 
 #CompAlgorithm(440)
 
-
+a = TETMajScale(220, 30)
+print(a)
 # a = Create12TETChromatic(440)
 # b = StandardMajScale(a)
 # c = TETMajScale(440, 9)

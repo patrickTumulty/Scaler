@@ -1,5 +1,6 @@
 from tkinter import*
 import FrequencyFunctions as ff
+import data_files as df
 import tkinter.messagebox
 
 # Patrick Tumulty 
@@ -28,7 +29,7 @@ sendOptions.pack(side=TOP, padx=10, pady=10)
 # ---------- gui variables ------------------------------
 
 variable = StringVar()
-v = IntVar()
+radio = StringVar()
 
 # ---------- gui functions ------------------------------
 
@@ -48,59 +49,133 @@ def change_state(*args):
         OctaveDivider.config(state=DISABLED)
         status.config(text="create a pythagorean scale...")
 
+
+def change_button_state(*args):
+    if radio.get() == "major":
+        print("12TET")
+        one.config(state=NORMAL)
+        two.config(state=NORMAL)
+        three.config(state=NORMAL)
+        four.config(state=NORMAL)
+        five.config(state=NORMAL)
+        six.config(state=NORMAL)
+        seven.config(state=NORMAL)
+        eight.config(state=NORMAL)
+    elif radio.get() == "new":
+        print("New Scale")
+        one.config(state=NORMAL)
+        two.config(state=NORMAL)
+        three.config(state=NORMAL)
+        four.config(state=NORMAL)
+        five.config(state=NORMAL)
+        six.config(state=NORMAL)
+        seven.config(state=NORMAL)
+        eight.config(state=NORMAL)
+
+
 variable.trace('w', change_state) #checks to see which option has been selected
+radio.trace('w', change_button_state)
+
 
 def addToList():
     majScale.delete(0, END)
     newScale.delete(0, END)
     centsOff.delete(0, END)
+    global otherScale
+    global MajScale
     if variable.get() == "TET":
         frequency = float(numEntry.get())
         octDivider = int(OctaveDivider.get())
         status.config(text="Major Scale / New TET Scale / Cents Off...")
         MajScale = ff.StandardMajScale(frequency)
-        newTET = ff.TETMajScale(frequency, octDivider) 
-        cents = ff.calculateCents(MajScale, newTET)
+        otherScale = ff.TETMajScale(frequency, octDivider) 
+        cents = ff.calculateCents(MajScale, otherScale)
         for i in range(len(MajScale)):
             val = MajScale[i]
             majScale.insert(END, val)
-        for i in range(len(newTET)):
-            val = newTET[i]
+        for i in range(len(otherScale)):
+            val = otherScale[i]
             newScale.insert(END, val)
         for i in range(len(cents)):
             val = cents[i]
             centsOff.insert(END, int(val))
+        df.write_data("MajorScale.txt", MajScale)
+        df.write_data("OtherScale.txt", otherScale)
     elif variable.get() == "Just":
         frequency = float(numEntry.get())
         status.config(text="Major Scale / Just Scale / Cents Off...")
         MajScale = ff.StandardMajScale(frequency)
-        Just = ff.JustScale(frequency)
-        cents = ff.calculateCents(MajScale, Just)
+        otherScale = ff.JustScale(frequency)
+        cents = ff.calculateCents(MajScale, otherScale)
+        df.write_data("MajorScale.txt", MajScale)
+        df.write_data("OtherScale.txt", otherScale)
         for i in range(len(MajScale)):
             val = MajScale[i]
             majScale.insert(END, val)
-        for i in range(len(Just)):
-            val = Just[i]
+        for i in range(len(otherScale)):
+            val = otherScale[i]
             newScale.insert(END, val)
         for i in range(len(cents)):
             val = cents[i]
-            centsOff.insert(END, int(val))
+            centsOff.insert(END, int(val))    
+        df.write_data("MajorScale.txt", MajScale)
+        df.write_data("OtherScale.txt", otherScale)
     elif variable.get() == "Pythagorean":
         frequency = float(numEntry.get())
         status.config(text="Major Scale / Pythagorean Scale / Cents Off...")
         MajScale = ff.StandardMajScale(frequency)
-        Pyth = ff.PythagoreanScale(frequency)
-        cents = ff.calculateCents(MajScale, Pyth)
+        otherScale = ff.PythagoreanScale(frequency)
+        cents = ff.calculateCents(MajScale, otherScale)
         for i in range(len(MajScale)):
             val = MajScale[i]
             majScale.insert(END, val)
-        for i in range(len(Pyth)):
-            val = Pyth[i]
+        for i in range(len(otherScale)):
+            val = otherScale[i]
             newScale.insert(END, val)
         for i in range(len(cents)):
             val = cents[i]
             centsOff.insert(END, int(val))
-        
+        df.write_data("MajorScale.txt", MajScale)
+        df.write_data("OtherScale.txt", otherScale)
+            
+
+def get_file_data(scaledegree):
+    """input scale degree. pulls data from the data file (depending on radio button) and runs the scale through genblock"""
+    if radio.get() == "major":
+        scale = df.read_data("MajorScale.txt")
+        block = ff.genBlock(scale, scaledegree)
+        return block
+    elif radio.get() == "new":
+        scale = df.read_data("OtherScale.txt")
+        block = ff.genBlock(scale, scaledegree)
+        return block
+
+def one_chord():
+    scale = get_file_data(1)
+    print(scale)
+def two_chord():
+    scale = get_file_data(2)
+    print(scale)
+def three_chord():
+    scale = get_file_data(3)
+    print(scale)
+def four_chord():
+    scale = get_file_data(4)
+    print(scale)
+def five_chord():
+    scale = get_file_data(5)
+    print(scale)
+def six_chord():
+    scale = get_file_data(6)
+    print(scale)
+def seven_chord():
+    scale = get_file_data(7)
+    print(scale)
+def eight_chord():
+    scale = get_file_data(8)
+    print(scale)
+
+
 # --------- Tkinter Widgets ---------------------------
 
 ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean")
@@ -115,18 +190,19 @@ OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
 showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
 status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
 
-one =   Button(chordButtons, text="I", width=8, height=3)
-two =   Button(chordButtons, text="II", width=8, height=3)
-three = Button(chordButtons, text="III", width=8, height=3)
-four =  Button(chordButtons, text="IV", width=8, height=3)
-five =  Button(chordButtons, text="V", width=8, height=3)
-six =   Button(chordButtons, text="VI", width=8, height=3)
-seven = Button(chordButtons, text="VII", width=8, height=3)
-eight = Button(chordButtons, text="VIII", width=8, height=3)
 
-soloMajor = Radiobutton(sendOptions, text="12 TET", variable=v, value=1)
-soloNew =   Radiobutton(sendOptions, text="New Scale", variable=v, value=2)
-Both =      Radiobutton(sendOptions, text="Both", variable=v, value=3)
+one =   Button(chordButtons, text="I", state=DISABLED, command = one_chord, width=8, height=3)    
+two =   Button(chordButtons, text="II", state=DISABLED, command = two_chord, width=8, height=3)
+three = Button(chordButtons, text="III", state=DISABLED, command = three_chord, width=8, height=3)
+four =  Button(chordButtons, text="IV", state=DISABLED, command = four_chord, width=8, height=3)
+five =  Button(chordButtons, text="V", state=DISABLED, command = five_chord, width=8, height=3)
+six =   Button(chordButtons, text="VI", state=DISABLED, command = six_chord, width=8, height=3)
+seven = Button(chordButtons, text="VII", state=DISABLED, command = seven_chord, width=8, height=3)
+eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord, width=8, height=3)
+
+soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major")
+soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new")
+# Both =      Radiobutton(sendOptions, text="Both", variable=radio, value=)
 
 majScale = Listbox(freqList, width=10)
 newScale = Listbox(freqList, width=10)
@@ -153,7 +229,7 @@ eight.grid(row=1, column=3)
 
 soloMajor.pack(side=LEFT)
 soloNew.pack(side=LEFT)
-Both.pack(side=LEFT)
+# Both.pack(side=LEFT)
 
 # ---------------------- Frequency Scales --------------
 
@@ -167,3 +243,30 @@ centsOff.grid(row=1, column=2, padx = 5)
 
 
 root.mainloop() 
+
+
+
+"""
+text file for left scale, text for middle scale. 
+Writes scale to text file
+Whenever we press a button, read from a text file 
+
+step one:
+    create scales and send to lists in GUI. Write those scales to a text file
+step two:
+    bring those scales back into our program and turn them into arrays
+step three:
+    use buttons and feed the scales into gen block 
+
+csv 
+Major scale and other scale separate text files
+    read newest line 
+    append next scale 
+
+
+overwrite file 
+SQLITE3
+Databases 
+
+
+"""
