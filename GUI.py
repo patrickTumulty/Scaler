@@ -7,17 +7,20 @@ import tkinter.messagebox
 # Last Updated: Feb. 28 2019
 
 # ---------- instantiate our window ------------------
+bg_color = "#F6FAF9"
+button_color = "#FFFFFF"
 
 root = Tk()
 root.title("TemperMental")
 root.resizable(width=False, height=False)
+root.config(background = bg_color)
 
 # ---------- window frames ----------------------------
 
-inputFrame =    Frame(root)
-freqList =      Frame(root)
-chordButtons =  Frame(root)
-sendOptions =   Frame(root)
+inputFrame =    Frame(root, background = bg_color)
+freqList =      Frame(root, background = bg_color)
+chordButtons =  Frame(root, background = bg_color)
+sendOptions =   Frame(root, background = bg_color)
 
 # ---------- window frame .pack ------------------------
 
@@ -179,34 +182,35 @@ def eight_chord():
 # --------- Tkinter Widgets ---------------------------
 
 ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean")
-freqLabel =     Label(inputFrame, text="Frequency:")
-scaleLabel =    Label(inputFrame, text="Choose Scale:")
-freqColumn =    Label(freqList, text="Major Scale")
-newColumn =     Label(freqList, text="New Scale")
-centsColumn =   Label(freqList, text="Cents")
+ScaleOption.config(bg = bg_color)
+freqLabel =     Label(inputFrame, text="Frequency:", bg = bg_color)
+scaleLabel =    Label(inputFrame, text="Choose Scale:", bg = bg_color)
+freqColumn =    Label(freqList, text="Major Scale", bg = bg_color )
+newColumn =     Label(freqList, text="New Scale", bg = bg_color)
+centsColumn =   Label(freqList, text="Cents", bg = bg_color)
 
-numEntry =      Entry(inputFrame, width=10)
-OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
-showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
-status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
+numEntry =      Entry(inputFrame, width=10, relief = SUNKEN, highlightbackground = bg_color, bg = button_color)
+OctaveDivider = Entry(inputFrame, width=10, state=DISABLED, highlightbackground = bg_color, bg = button_color)
+showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED, highlightbackground=bg_color)
+status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W, bg = bg_color)
 
 
-one =   Button(chordButtons, text="I", state=DISABLED, command = one_chord, width=8, height=3)    
-two =   Button(chordButtons, text="II", state=DISABLED, command = two_chord, width=8, height=3)
-three = Button(chordButtons, text="III", state=DISABLED, command = three_chord, width=8, height=3)
-four =  Button(chordButtons, text="IV", state=DISABLED, command = four_chord, width=8, height=3)
-five =  Button(chordButtons, text="V", state=DISABLED, command = five_chord, width=8, height=3)
-six =   Button(chordButtons, text="VI", state=DISABLED, command = six_chord, width=8, height=3)
-seven = Button(chordButtons, text="VII", state=DISABLED, command = seven_chord, width=8, height=3)
-eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord, width=8, height=3)
+one =   Button(chordButtons, text="I", state=DISABLED, command = one_chord, width=8, height=3, highlightbackground=button_color)    
+two =   Button(chordButtons, text="II", state=DISABLED, command = two_chord, width=8, height=3, highlightbackground=button_color)
+three = Button(chordButtons, text="III", state=DISABLED, command = three_chord, width=8, height=3, highlightbackground=button_color)
+four =  Button(chordButtons, text="IV", state=DISABLED, command = four_chord, width=8, height=3, highlightbackground=button_color)
+five =  Button(chordButtons, text="V", state=DISABLED, command = five_chord, width=8, height=3, highlightbackground=button_color)
+six =   Button(chordButtons, text="VI", state=DISABLED, command = six_chord, width=8, height=3, highlightbackground=button_color)
+seven = Button(chordButtons, text="VII", state=DISABLED, command = seven_chord, width=8, height=3, highlightbackground=button_color)
+eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord, width=8, height=3, highlightbackground=button_color)
 
-soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major")
-soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new")
+soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major", bg = bg_color)
+soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new", bg = bg_color)
 # Both =      Radiobutton(sendOptions, text="Both", variable=radio, value=)
 
-majScale = Listbox(freqList, width=10)
-newScale = Listbox(freqList, width=10)
-centsOff = Listbox(freqList, width=10)
+majScale = Listbox(freqList, width=10, bg = button_color)
+newScale = Listbox(freqList, width=10, bg = button_color)
+centsOff = Listbox(freqList, width=10, bg = button_color)
 
 # ---------------------- Buttons, Entry, and Label pack ------------
 
