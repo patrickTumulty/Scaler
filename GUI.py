@@ -7,8 +7,11 @@ import tkinter.messagebox
 # Last Updated: Feb. 28 2019
 
 # ---------- instantiate our window ------------------
-bg_color = "#F6FAF9"
-button_color = "#FFFFFF"
+# bg_color = "#F6FAF9"
+# button_color = "#FFFFFF"
+
+bg_color = "#D7D7D7"
+button_color = "#D7D7D7"
 
 root = Tk()
 root.title("TemperMental")
