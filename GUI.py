@@ -2,6 +2,7 @@ from tkinter import*
 import FrequencyFunctions as ff
 import data_files as df
 import tkinter.messagebox
+import python_midi
 
 # Patrick Tumulty 
 # Last Updated: Feb. 28 2019
@@ -59,6 +60,7 @@ def change_state(*args):
 def change_button_state(*args):
     if radio.get() == "major":
         print("12TET")
+        midi_activate.config(state=NORMAL)
         one.config(state=NORMAL)
         two.config(state=NORMAL)
         three.config(state=NORMAL)
@@ -69,6 +71,7 @@ def change_button_state(*args):
         eight.config(state=NORMAL)
     elif radio.get() == "new":
         print("New Scale")
+        midi_activate.config(state=NORMAL)
         one.config(state=NORMAL)
         two.config(state=NORMAL)
         three.config(state=NORMAL)
@@ -156,6 +159,16 @@ def get_file_data(scaledegree):
         block = ff.genBlock(scale, scaledegree)
         return block
 
+def set_midi_scale():
+    if radio.get() == 'major':
+        scale = df.read_data("MajorScale.txt")
+        Two_Oct = df.extend_scale(scale)
+        python_midi.open_midi_stream(Two_Oct, 'MPKmini2')
+    elif radio.get() == "new":
+        scale = df.read_data("OtherScale.txt")
+        Two_Oct = df.extend_scale(scale)
+        python_midi.open_midi_stream(Two_Oct, 'MPKmini2')
+
 def one_chord():
     scale = get_file_data(1)
     print(scale)
@@ -207,6 +220,7 @@ six =   Button(chordButtons, text="VI", state=DISABLED, command = six_chord, wid
 seven = Button(chordButtons, text="VII", state=DISABLED, command = seven_chord, width=8, height=3, highlightbackground=button_color)
 eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord, width=8, height=3, highlightbackground=button_color)
 
+midi_activate = Button(sendOptions, text="Start MIDI", width = 15, state=DISABLED, command=set_midi_scale, highlightbackground=button_color)
 soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major", bg = bg_color)
 soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new", bg = bg_color)
 # Both =      Radiobutton(sendOptions, text="Both", variable=radio, value=)
@@ -234,8 +248,10 @@ six.grid(row=1, column=1)
 seven.grid(row=1, column=2)
 eight.grid(row=1, column=3)
 
+midi_activate.pack(side=BOTTOM)
 soloMajor.pack(side=LEFT)
 soloNew.pack(side=LEFT)
+
 # Both.pack(side=LEFT)
 
 # ---------------------- Frequency Scales --------------
@@ -252,28 +268,3 @@ centsOff.grid(row=1, column=2, padx = 5)
 root.mainloop() 
 
 
-
-"""
-text file for left scale, text for middle scale. 
-Writes scale to text file
-Whenever we press a button, read from a text file 
-
-step one:
-    create scales and send to lists in GUI. Write those scales to a text file
-step two:
-    bring those scales back into our program and turn them into arrays
-step three:
-    use buttons and feed the scales into gen block 
-
-csv 
-Major scale and other scale separate text files
-    read newest line 
-    append next scale 
-
-
-overwrite file 
-SQLITE3
-Databases 
-
-
-"""

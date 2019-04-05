@@ -12,3 +12,17 @@ def read_data(filename):
         num = float(data[i])
         array.append(num)
     return array
+
+def extend_scale(scale_array):
+        for i in range(len(scale_array)):
+                if i == 0:
+                        continue
+                newFreq = scale_array[i] * 2
+                scale_array.append(newFreq)
+        return scale_array
+        
+
+
+a = read_data("OtherScale.txt")
+b = extend_scale(a)
+print(b)
