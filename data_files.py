@@ -14,12 +14,15 @@ def read_data(filename):
     return array
 
 def extend_scale(scale_array):
-        for i in range(len(scale_array)):
-                if i == 0:
-                        continue
-                newFreq = scale_array[i] * 2
-                scale_array.append(newFreq)
-        return scale_array
+    for i in range(len(scale_array)):
+        if i == 0:
+                continue
+        newFreq = scale_array[i] * 2
+        scale_array.append(newFreq)
+    return scale_array
+
+
+
         
 
 
