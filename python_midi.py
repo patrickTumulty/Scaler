@@ -1,7 +1,7 @@
 import mido 
 import data_files as df
 
-midi_device = 'MPKmini2'
+# midi_device = 'MPKmini2'
 # midi_device = 'CASIO USB-MIDI'
 
 

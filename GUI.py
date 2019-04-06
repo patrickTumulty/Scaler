@@ -3,6 +3,7 @@ import FrequencyFunctions as ff
 import data_files as df
 import tkinter.messagebox
 import python_midi
+import mido
 
 # Patrick Tumulty 
 # Last Updated: Feb. 28 2019
@@ -37,6 +38,8 @@ sendOptions.pack(side=TOP, padx=10, pady=10)
 
 variable = StringVar()
 radio = StringVar()
+midiString = StringVar()
+# inputDevice = StringVar()
 
 # ---------- gui functions ------------------------------
 
@@ -60,7 +63,6 @@ def change_state(*args):
 def change_button_state(*args):
     if radio.get() == "major":
         print("12TET")
-        midi_activate.config(state=NORMAL)
         one.config(state=NORMAL)
         two.config(state=NORMAL)
         three.config(state=NORMAL)
@@ -71,7 +73,6 @@ def change_button_state(*args):
         eight.config(state=NORMAL)
     elif radio.get() == "new":
         print("New Scale")
-        midi_activate.config(state=NORMAL)
         one.config(state=NORMAL)
         two.config(state=NORMAL)
         three.config(state=NORMAL)
@@ -80,9 +81,15 @@ def change_button_state(*args):
         six.config(state=NORMAL)
         seven.config(state=NORMAL)
         eight.config(state=NORMAL)
+    
+def assign_midi(*args):
+    midi_activate.config(state=NORMAL)
+    global inputDevice
+    inputDevice = midiString.get()
 
 
 variable.trace('w', change_state) #checks to see which option has been selected
+midiString.trace('w', assign_midi)
 radio.trace('w', change_button_state)
 
 
@@ -163,11 +170,11 @@ def set_midi_scale():
     if radio.get() == 'major':
         scale = df.read_data("MajorScale.txt")
         Two_Oct = df.extend_scale(scale)
-        python_midi.open_midi_stream(Two_Oct, 'MPKmini2')
+        python_midi.open_midi_stream(Two_Oct, inputDevice)
     elif radio.get() == "new":
         scale = df.read_data("OtherScale.txt")
         Two_Oct = df.extend_scale(scale)
-        python_midi.open_midi_stream(Two_Oct, 'MPKmini2')
+        python_midi.open_midi_stream(Two_Oct, inputDevice)
 
 def one_chord():
     scale = get_file_data(1)
@@ -194,6 +201,28 @@ def eight_chord():
     scale = get_file_data(8)
     print(scale)
 
+def midi_input_config():
+    midi_setup_window = Tk()
+    midi_setup_window.title("Midi Setup")
+    inputs = mido.get_input_names()
+    midiLabel = Label(midi_setup_window, text="Select MIDI Input:")
+    midiOptions = OptionMenu(midi_setup_window, midiString, *inputs)
+    midiLabel.pack(side=LEFT, padx=10, pady=10)
+    midiOptions.pack(side=LEFT, padx=10, pady=10)
+    midi_setup_window.mainloop()
+
+def open_info_window():
+    info = Tk()
+    info.title("About")
+    prog_file = open("ProgramInfo.txt", "r")
+    words = prog_file.read()
+    infoLabel = Label(info, text=words)
+    infoLabel.pack(padx=10, pady=10)
+    info.mainloop()
+
+
+
+    
 
 # --------- Tkinter Widgets ---------------------------
 
@@ -253,6 +282,23 @@ soloMajor.pack(side=LEFT)
 soloNew.pack(side=LEFT)
 
 # Both.pack(side=LEFT)
+
+# ---------------------- Menu Bar --------------
+
+# create a pulldown menu, and add it to the menu bar
+menubar = Menu(root)
+
+# create a pulldown menu, and add it to the menu bar
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="Midi Config", command=midi_input_config)
+filemenu.add_command(label="info", command=open_info_window)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+
+
+# display the menu
+root.config(menu=menubar)
 
 # ---------------------- Frequency Scales --------------
 

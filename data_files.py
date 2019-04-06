@@ -23,6 +23,3 @@ def extend_scale(scale_array):
         
 
 
-a = read_data("OtherScale.txt")
-b = extend_scale(a)
-print(b)

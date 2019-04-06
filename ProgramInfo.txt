@@ -1,0 +1,13 @@
+Created by:
+Patrick Tumulty 
+Jason Krasavage 
+
+
+The Sonic Experience
+Tunings and Temperaments 
+
+OSC
+SuperCollider
+Python
+Tkinter
+Mido

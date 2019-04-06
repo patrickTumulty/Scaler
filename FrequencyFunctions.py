@@ -259,8 +259,8 @@ def CompAlgorithm(frequencyArray):
 
 #CompAlgorithm(440)
 
-a = TETMajScale(220, 30)
-print(a)
+# a = TETMajScale(220, 30)
+# print(a)
 # a = Create12TETChromatic(440)
 # b = StandardMajScale(a)
 # c = TETMajScale(440, 9)
