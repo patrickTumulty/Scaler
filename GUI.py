@@ -4,28 +4,25 @@ import data_files as df
 import tkinter.messagebox
 import python_midi
 import mido
+from pythonosc import udp_client
 
 # Patrick Tumulty 
 # Last Updated: Feb. 28 2019
 
 # ---------- instantiate our window ------------------
-# bg_color = "#F6FAF9"
-# button_color = "#FFFFFF"
 
-bg_color = "#D7D7D7"
-button_color = "#D7D7D7"
 
 root = Tk()
 root.title("TemperMental")
 root.resizable(width=False, height=False)
-root.config(background = bg_color)
+root.config()
 
 # ---------- window frames ----------------------------
 
-inputFrame =    Frame(root, background = bg_color)
-freqList =      Frame(root, background = bg_color)
-chordButtons =  Frame(root, background = bg_color)
-sendOptions =   Frame(root, background = bg_color)
+inputFrame =    Frame(root)
+freqList =      Frame(root)
+chordButtons =  Frame(root)
+sendOptions =   Frame(root)
 
 # ---------- window frame .pack ------------------------
 
@@ -178,37 +175,54 @@ def set_midi_scale():
 
 def one_chord():
     scale = get_file_data(1)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 def two_chord():
     scale = get_file_data(2)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 def three_chord():
     scale = get_file_data(3)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 def four_chord():
     scale = get_file_data(4)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 def five_chord():
     scale = get_file_data(5)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 def six_chord():
     scale = get_file_data(6)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 def seven_chord():
     scale = get_file_data(7)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 def eight_chord():
     scale = get_file_data(8)
+    triad = scale[1]
+    my_client.send_message("/triad", triad[1:])
     print(scale)
 
 def midi_input_config():
     midi_setup_window = Tk()
     midi_setup_window.title("Midi Setup")
-    inputs = mido.get_input_names()
-    midiLabel = Label(midi_setup_window, text="Select MIDI Input:")
-    midiOptions = OptionMenu(midi_setup_window, midiString, *inputs)
-    midiLabel.pack(side=LEFT, padx=10, pady=10)
-    midiOptions.pack(side=LEFT, padx=10, pady=10)
+    midiLabel = Label(midi_setup_window, text="Select MIDI Input:", width=20)
+    midiList = ["MIDI"]
+    midiList.append(mido.get_input_names())
+    midiOptions = OptionMenu(midi_setup_window, midiString, *midiList)
+    midiLabel.pack()
+    midiOptions.pack()
     midi_setup_window.mainloop()
 
 def open_info_window():
@@ -220,6 +234,11 @@ def open_info_window():
     infoLabel.pack(padx=10, pady=10)
     info.mainloop()
 
+def client_config():
+    global my_client
+    my_client = udp_client.SimpleUDPClient("172.30.98.2", 57120)
+
+
 
 
     
@@ -227,36 +246,37 @@ def open_info_window():
 # --------- Tkinter Widgets ---------------------------
 
 ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean")
-ScaleOption.config(bg = bg_color)
-freqLabel =     Label(inputFrame, text="Frequency:", bg = bg_color)
-scaleLabel =    Label(inputFrame, text="Choose Scale:", bg = bg_color)
-freqColumn =    Label(freqList, text="Major Scale", bg = bg_color )
-newColumn =     Label(freqList, text="New Scale", bg = bg_color)
-centsColumn =   Label(freqList, text="Cents", bg = bg_color)
 
-numEntry =      Entry(inputFrame, width=10, relief = SUNKEN, highlightbackground = bg_color, bg = button_color)
-OctaveDivider = Entry(inputFrame, width=10, state=DISABLED, highlightbackground = bg_color, bg = button_color)
-showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED, highlightbackground=bg_color)
-status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W, bg = bg_color)
+freqLabel =     Label(inputFrame, text="Frequency:")
+scaleLabel =    Label(inputFrame, text="Choose Scale:")
+freqColumn =    Label(freqList, text="Major Scale")
+newColumn =     Label(freqList, text="New Scale")
+centsColumn =   Label(freqList, text="Cents")
+
+numEntry =      Entry(inputFrame, width=10, relief = SUNKEN)
+OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
+showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
+status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
 
 
-one =   Button(chordButtons, text="I", state=DISABLED, command = one_chord, width=8, height=3, highlightbackground=button_color)    
-two =   Button(chordButtons, text="II", state=DISABLED, command = two_chord, width=8, height=3, highlightbackground=button_color)
-three = Button(chordButtons, text="III", state=DISABLED, command = three_chord, width=8, height=3, highlightbackground=button_color)
-four =  Button(chordButtons, text="IV", state=DISABLED, command = four_chord, width=8, height=3, highlightbackground=button_color)
-five =  Button(chordButtons, text="V", state=DISABLED, command = five_chord, width=8, height=3, highlightbackground=button_color)
-six =   Button(chordButtons, text="VI", state=DISABLED, command = six_chord, width=8, height=3, highlightbackground=button_color)
-seven = Button(chordButtons, text="VII", state=DISABLED, command = seven_chord, width=8, height=3, highlightbackground=button_color)
-eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord, width=8, height=3, highlightbackground=button_color)
+one =   Button(chordButtons, text="I", state=DISABLED, command = one_chord, width=8, height=3)    
+two =   Button(chordButtons, text="II", state=DISABLED, command = two_chord, width=8, height=3)
+three = Button(chordButtons, text="III", state=DISABLED, command = three_chord, width=8, height=3)
+four =  Button(chordButtons, text="IV", state=DISABLED, command = four_chord, width=8, height=3)
+five =  Button(chordButtons, text="V", state=DISABLED, command = five_chord, width=8, height=3)
+six =   Button(chordButtons, text="VI", state=DISABLED, command = six_chord, width=8, height=3)
+seven = Button(chordButtons, text="VII", state=DISABLED, command = seven_chord, width=8, height=3)
+eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord, width=8, height=3)
 
-midi_activate = Button(sendOptions, text="Start MIDI", width = 15, state=DISABLED, command=set_midi_scale, highlightbackground=button_color)
-soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major", bg = bg_color)
-soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new", bg = bg_color)
+midi_activate = Button(sendOptions, text="Start MIDI", width = 15, state=DISABLED, command=set_midi_scale)
+soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major")
+soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new")
+clientConfig = Button(sendOptions, text="Config", width=15, command=client_config)
 # Both =      Radiobutton(sendOptions, text="Both", variable=radio, value=)
 
-majScale = Listbox(freqList, width=10, bg = button_color)
-newScale = Listbox(freqList, width=10, bg = button_color)
-centsOff = Listbox(freqList, width=10, bg = button_color)
+majScale = Listbox(freqList, width=10)
+newScale = Listbox(freqList, width=10)
+centsOff = Listbox(freqList, width=10)
 
 # ---------------------- Buttons, Entry, and Label pack ------------
 
@@ -278,6 +298,7 @@ seven.grid(row=1, column=2)
 eight.grid(row=1, column=3)
 
 midi_activate.pack(side=BOTTOM)
+clientConfig.pack(side=BOTTOM)
 soloMajor.pack(side=LEFT)
 soloNew.pack(side=LEFT)
 

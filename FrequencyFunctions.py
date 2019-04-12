@@ -34,12 +34,12 @@ def TETChromaticScale(frequency, octaveDivider):
 
 def StandardMajScale(frequency):
     """Takes one arguement, frequency. Returns an array of 8 frequencies from 12 TET chromatic scale"""
-    EightSteps = np.array([])
+    EightSteps = []
     freqArray = Create12TETChromatic(frequency)
     steps = (0, 2, 4, 5, 7, 9, 11, 12)
     for i in steps:
         scale = freqArray[i]
-        EightSteps = np.append(EightSteps, scale)
+        EightSteps.append(scale)
     return EightSteps
 
 def JustScale(frequency):
@@ -76,7 +76,7 @@ def SecondLoop(frequency, newTET):
     absList = []
     minimum = 0
     for i in range(len(newTET)):
-        absVal = np.round(abs(newTET[i] - frequency))
+        absVal = round(abs(newTET[i] - frequency))
         absList.append(absVal)
         minimum = min(absList)
     location = absList.index(minimum)
@@ -268,8 +268,6 @@ def CompAlgorithm(frequencyArray):
 
 # c = genBlock(b, 5) #the scale i created above and the fifth chord in the scale
 # print(c)
-
-
 
 
 
