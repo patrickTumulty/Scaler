@@ -7,7 +7,7 @@ import mido
 from pythonosc import udp_client
 
 # Patrick Tumulty 
-# Last Updated: April. 22 2019
+# Last Updated: April. 25 2019
 
 # ---------- instantiate our window ------------------
 

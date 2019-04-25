@@ -11,7 +11,7 @@ def open_midi_stream(filename, midi_device, ip_Address):
     msg = mido.Message('note_on', note=60)
     freq_scale = df.extend_scale(filename)
     client = udp_client.SimpleUDPClient(ip_Address, 57120)
-    with mido.open_input("MPKmini2") as inport:
+    with mido.open_input(midi_device) as inport:
         for msg in inport:
             if msg.note == 49: # 49 is C#3 which will end the stream
                 break
