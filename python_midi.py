@@ -1,6 +1,7 @@
 import mido 
 import data_files as df
 from pythonosc import udp_client
+import GUI as gui
 
 # midi_device = 'MPKmini2'
 # midi_device = 'CASIO USB-MIDI'
@@ -105,12 +106,58 @@ def open_midi_stream(filename, midi_device, ip_Address):
                 else:
                     client.send_message("/noteOff", 0)
             ###### BLACK KEYS ######
-            elif msg.note == 72:
+            elif msg.note == 51:
                 if msg.type == "note_on":
-                    client.send_message("/noteOn", freq_scale[14])
-                    print(freq_scale[14])
-                else:
-                    client.send_message("/noteOff", 0)
-
+                    scale = gui.get_file_data(1)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 1")
+            elif msg.note == 54:
+                if msg.type == "note_on":
+                    scale = gui.get_file_data(2)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 2"
+            elif msg.note == 56:
+                if msg.type == "note_on":
+                    scale = gui.get_file_data(3)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 3")
+            elif msg.note == 58:
+                if msg.type == "note_on":
+                    scale = gui.get_file_data(4)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 4")
+            elif msg.note == 61:
+                if msg.type == "note_on":
+                    scale = gui.get_file_data(5)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 5")
+            elif msg.note == 63:
+                if msg.type == "note_on":
+                    scale = gui.get_file_data(6)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 6")
+            elif msg.note == 66:
+                if msg.type == "note_on":
+                    scale = gui.get_file_data(7)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 7")
+            elif msg.note == 68:
+                if msg.type == "note_on":
+                    scale = gui.get_file_data(8)
+                    triad = scale[1]
+                    my_client.send_message("/triad", triad[1:])
+                    print("Chord 8")
+            elif msg.note == 70:
+                if msg.type == "note_on":
+                    my_client.send_message("/triad", [0,0,0])
+                    print("Chords OFF")
             print(msg.type)
+
 

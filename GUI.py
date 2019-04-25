@@ -124,8 +124,6 @@ radio.trace('w', change_button_state)
 RatioVariable.trace('w', change_ratio)
 
 
-
-
 def addToList():
     """ Populates the three GUI lists """
     majScale.delete(0, END)
