@@ -30,8 +30,6 @@ def TETChromaticScale(frequency, octaveDivider):
     return scale
 
 
-# Functions used TETMajScale
-
 def StandardMajScale(frequency):
     """Takes one arguement, frequency. Returns an array of 8 frequencies from 12 TET chromatic scale"""
     EightSteps = []
@@ -42,6 +40,7 @@ def StandardMajScale(frequency):
         EightSteps.append(scale)
     return EightSteps
 
+
 def JustScale(frequency):
     """Takes in a frequency. Returns an array of 8 frequencies in the Just scale"""
     EightSteps = []
@@ -51,6 +50,7 @@ def JustScale(frequency):
         EightSteps.append(note)
     return EightSteps
 
+
 def PythagoreanScale(frequency):
     """Takes in a frequency. Returns an array of 8 frequencies in the Pythagorean scale"""
     EightSteps = []
@@ -59,6 +59,23 @@ def PythagoreanScale(frequency):
         note = round(frequency * ratios[i],2)
         EightSteps.append(note)
     return EightSteps
+
+
+def RatioScale(frequency, ratio):
+    """ Creates a diatonic scale from a generator frequency. Frequency is the first scale degree. ratio 
+    is intended to be one of the following [3/2, 4/3, 5/4, 5/3, 9/8, 6/5] """
+    scale = [frequency]
+    for i in range(6):
+        if i == 5:
+            val = (frequency * 2) * (1/round(ratio, 3))
+        else:
+            val = scale[i] * round(ratio, 3)
+        if val > frequency * 2:
+            val /= 2
+        scale.append(round(val, 2))
+    scale.append(frequency * 2)
+    scale.sort()
+    return scale
 
 
 def calculateCents(referenceScale, newScale):
@@ -71,7 +88,7 @@ def calculateCents(referenceScale, newScale):
     return centsList
 
 
-def SecondLoop(frequency, newTET):
+def FrequencyBestFit(frequency, newTET):
     """This function is used only in conjunction with TETMajScale()"""
     absList = []
     minimum = 0
@@ -90,7 +107,7 @@ def TETMajScale(frequency, octaveDivider):
     newTET = TETChromaticScale(frequency, octaveDivider)
     newScale = []
     for i in range(len(standard)):
-        freq = SecondLoop(standard[i], newTET)
+        freq = FrequencyBestFit(standard[i], newTET)
         newScale.append(freq)
     return newScale
 
@@ -212,62 +229,6 @@ def genBlock(frequencyArray, chordNum):
     return SendValues
 
 
-def CompAlgorithm(frequencyArray):
-    """Takes a frequency array and returns a random order of blocks from genBlock()"""
-    loop = 0
-    for i in range(8):
-        block = genBlock(frequencyArray, (i + 1))
-        if i == 0:
-            one = block
-        if i == 1:
-            two = block
-        if i == 2:
-            three = block
-        if i == 3:
-            four = block
-        if i == 4:
-            five = block
-        if i == 5:
-            six = block
-        if i == 6:
-            sev = block
-        if i == 7:
-            octave = block
-    while loop < 10: 
-        val = random.randint(1, 8)
-        if val == 1:
-            print(one, "ONE") 
-        elif val == 2:
-            print(two, "TWO") 
-        elif val == 3:
-            print(three) 
-        elif val == 4:
-            print(four) 
-        elif val == 5:
-            print(five) 
-        elif val == 6:
-            print(six) 
-        elif val == 7:
-            print(sev) 
-        elif val == 8:
-            print(octave, "Eight") 
-        loop += 1
-
-    
-  
-# ----------------------------
-
-#CompAlgorithm(440)
-
-# a = TETMajScale(220, 30)
-# print(a)
-# a = Create12TETChromatic(440)
-# b = StandardMajScale(a)
-# c = TETMajScale(440, 9)
-# d = calculateCents(b, c)
-
-# c = genBlock(b, 5) #the scale i created above and the fifth chord in the scale
-# print(c)
 
 
 

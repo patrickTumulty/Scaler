@@ -6,10 +6,10 @@ from pythonosc import udp_client
 # midi_device = 'CASIO USB-MIDI'
 
 
-def open_midi_stream(filename, midi_device):
+def open_midi_stream(filename, midi_device, ip_Address):
     msg = mido.Message('note_on', note=60)
     freq_scale = df.extend_scale(filename)
-    client = udp_client.SimpleUDPClient("172.30.98.2", 57120)
+    client = udp_client.SimpleUDPClient(ip_Address, 57120)
     with mido.open_input("MPKmini2") as inport:
         for msg in inport:
             if msg.note == 49: # 49 is C#3 which will end the stream
@@ -104,5 +104,13 @@ def open_midi_stream(filename, midi_device):
                     print(freq_scale[14])
                 else:
                     client.send_message("/noteOff", 0)
+            ###### BLACK KEYS ######
+            elif msg.note == 72:
+                if msg.type == "note_on":
+                    client.send_message("/noteOn", freq_scale[14])
+                    print(freq_scale[14])
+                else:
+                    client.send_message("/noteOff", 0)
+
             print(msg.type)
 

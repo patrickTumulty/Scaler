@@ -7,7 +7,7 @@ import mido
 from pythonosc import udp_client
 
 # Patrick Tumulty 
-# Last Updated: Feb. 28 2019
+# Last Updated: April. 22 2019
 
 # ---------- instantiate our window ------------------
 
@@ -34,9 +34,13 @@ sendOptions.pack(side=TOP, padx=10, pady=10)
 # ---------- gui variables ------------------------------
 
 variable = StringVar()
+RatioVariable = StringVar()
 radio = StringVar()
 midiString = StringVar()
-# inputDevice = StringVar()
+_ipAddress = StringVar()
+inputDevice = StringVar()
+homeAddress = IntVar()
+
 
 # ---------- gui functions ------------------------------
 
@@ -46,18 +50,45 @@ def change_state(*args):
     if scale == "TET":
         showButton.config(state=NORMAL)
         OctaveDivider.config(state=NORMAL)
+        RatioOption.config(state=DISABLED)
         status.config(text="create a new equal tempered scale...")
     elif scale == "Just":
         showButton.config(state=NORMAL)
         OctaveDivider.config(state=DISABLED)
+        RatioOption.config(state=DISABLED)
         status.config(text="create a just scale...")
     elif scale == "Pythagorean":
         showButton.config(state=NORMAL)
         OctaveDivider.config(state=DISABLED)
+        RatioOption.config(state=DISABLED)
         status.config(text="create a pythagorean scale...")
+    elif scale == "Ratio":
+        showButton.config(state=NORMAL)
+        OctaveDivider.config(state=DISABLED)
+        RatioOption.config(state=NORMAL)
+        status.config(text="create a scale based on a generator ratio...")
 
+
+def change_ratio(*args):
+    """ "3/2", "4/3", "5/4", "5/3", "9/8", "6/5" """
+    ratio = RatioVariable.get()
+    global GeneratorRatio
+    if ratio == "3/2":
+        GeneratorRatio = 3/2 # 1.5
+    elif ratio == "4/3":
+        GeneratorRatio = 4/3 # 1.333
+    elif ratio == "5/4":
+        GeneratorRatio = 5/4 # 1.25
+    elif ratio == "5/3":
+        GeneratorRatio = 5/3 # 1.667
+    elif ratio == "9/8":
+        GeneratorRatio = 9/8 # 1.125
+    elif ratio == "6/5":
+        GeneratorRatio = 6/5 # 1.2
+     
 
 def change_button_state(*args):
+    """ Function waits for user to choose which scale they want to sonify and then activates the buttons  """
     if radio.get() == "major":
         print("12TET")
         one.config(state=NORMAL)
@@ -78,19 +109,25 @@ def change_button_state(*args):
         six.config(state=NORMAL)
         seven.config(state=NORMAL)
         eight.config(state=NORMAL)
-    
+
+
 def assign_midi(*args):
     midi_activate.config(state=NORMAL)
     global inputDevice
     inputDevice = midiString.get()
 
+# ------------- Button State Variables ------------
 
 variable.trace('w', change_state) #checks to see which option has been selected
 midiString.trace('w', assign_midi)
 radio.trace('w', change_button_state)
+RatioVariable.trace('w', change_ratio)
+
+
 
 
 def addToList():
+    """ Populates the three GUI lists """
     majScale.delete(0, END)
     newScale.delete(0, END)
     centsOff.delete(0, END)
@@ -150,6 +187,23 @@ def addToList():
             centsOff.insert(END, int(val))
         df.write_data("MajorScale.txt", MajScale)
         df.write_data("OtherScale.txt", otherScale)
+    elif variable.get() == "Ratio":
+        frequency = float(numEntry.get())
+        status.config(text="Major Scale / Ratio Scale / Cents Off...")
+        MajScale = ff.StandardMajScale(frequency)
+        otherScale = ff.RatioScale(frequency, GeneratorRatio)
+        cents = ff.calculateCents(MajScale, otherScale)
+        for i in range(len(MajScale)):
+            val = MajScale[i]
+            majScale.insert(END, val)
+        for i in range(len(otherScale)):
+            val = otherScale[i]
+            newScale.insert(END, val)
+        for i in range(len(cents)):
+            val = cents[i]
+            centsOff.insert(END, int(val))
+        df.write_data("MajorScale.txt", MajScale)
+        df.write_data("OtherScale.txt", otherScale)
             
 
 def get_file_data(scaledegree):
@@ -163,7 +217,9 @@ def get_file_data(scaledegree):
         block = ff.genBlock(scale, scaledegree)
         return block
 
+
 def set_midi_scale():
+    """Reads in text file, parses information, starts midi stream"""
     if radio.get() == 'major':
         scale = df.read_data("MajorScale.txt")
         Two_Oct = df.extend_scale(scale)
@@ -172,6 +228,7 @@ def set_midi_scale():
         scale = df.read_data("OtherScale.txt")
         Two_Oct = df.extend_scale(scale)
         python_midi.open_midi_stream(Two_Oct, inputDevice)
+
 
 def one_chord():
     scale = get_file_data(1)
@@ -214,16 +271,44 @@ def eight_chord():
     my_client.send_message("/triad", triad[1:])
     print(scale)
 
+
+def saveSettings():
+    print(inputDevice)
+    print(ipAddressEntry.get())
+    status.config(text="Device: " + inputDevice + " IP Address: " + ipAddressEntry.get())
+
 def midi_input_config():
     midi_setup_window = Tk()
+    set_up_screen = Frame(midi_setup_window)
     midi_setup_window.title("Midi Setup")
-    midiLabel = Label(midi_setup_window, text="Select MIDI Input:", width=20)
+    global homeAddress
+    global ipAddressEntry   
+    midiLabel = Label(set_up_screen, text="Select MIDI Input:", width=20)
+    ipLabel = Label(set_up_screen, text="IP Address:", width=20)
+    localIP = Label(set_up_screen, text="For Local Machine: 127.0.0.1")
+    ipAddressEntry = Entry(set_up_screen)
+    testButton = Button(set_up_screen, text="Save Settings", width=40, bg='red',command=saveSettings)
     midiList = ["MIDI"]
-    midiList.append(mido.get_input_names())
-    midiOptions = OptionMenu(midi_setup_window, midiString, *midiList)
-    midiLabel.pack()
-    midiOptions.pack()
+    devices = detect_midi()
+    for item in devices:
+        midiList.append(item)
+    midiOptions = OptionMenu(set_up_screen, midiString, *midiList)
+    set_up_screen.pack(padx=20, pady=20)
+    midiLabel.grid(row=0, sticky='W')
+    ipLabel.grid(row=1, sticky=W)
+    midiOptions.grid(row=0, column=1)
+    ipAddressEntry.grid(row=1, column=1)
+    localIP.grid(row=2, column=1)
+    testButton.grid(row=3, columnspan=2)
+
     midi_setup_window.mainloop()
+
+
+def detect_midi():
+    devices = []
+    for item in mido.get_input_names():
+        devices.append(item)
+    return devices
 
 def open_info_window():
     info = Tk()
@@ -234,18 +319,25 @@ def open_info_window():
     infoLabel.pack(padx=10, pady=10)
     info.mainloop()
 
+def open_help_window():
+    info = Tk()
+    info.title("Help Window")
+    prog_file = open("HelpInfo.txt", "r")
+    words = prog_file.read()
+    infoLabel = Label(info, text=words)
+    infoLabel.pack(padx=10, pady=10)
+    info.mainloop()
+
+
 def client_config():
     global my_client
-    my_client = udp_client.SimpleUDPClient("172.30.98.2", 57120)
+    my_client = udp_client.SimpleUDPClient(ipAddressEntry.get(), 57120)
 
-
-
-
-    
 
 # --------- Tkinter Widgets ---------------------------
 
-ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean")
+ScaleOption =   OptionMenu(inputFrame, variable, "TET", "Just", "Pythagorean", "Ratio")
+RatioOption =   OptionMenu(inputFrame, RatioVariable, "3/2", "4/3", "5/4", "5/3", "9/8", "6/5")
 
 freqLabel =     Label(inputFrame, text="Frequency:")
 scaleLabel =    Label(inputFrame, text="Choose Scale:")
@@ -257,7 +349,6 @@ numEntry =      Entry(inputFrame, width=10, relief = SUNKEN)
 OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
 showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
 status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
-
 
 one =   Button(chordButtons, text="I", state=DISABLED, command = one_chord, width=8, height=3)    
 two =   Button(chordButtons, text="II", state=DISABLED, command = two_chord, width=8, height=3)
@@ -271,6 +362,7 @@ eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord,
 midi_activate = Button(sendOptions, text="Start MIDI", width = 15, state=DISABLED, command=set_midi_scale)
 soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major")
 soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new")
+
 clientConfig = Button(sendOptions, text="Config", width=15, command=client_config)
 # Both =      Radiobutton(sendOptions, text="Both", variable=radio, value=)
 
@@ -286,6 +378,7 @@ scaleLabel.grid(row=2, column=0)
 numEntry.grid(row=1, column=1)
 OctaveDivider.grid(row=3, column=1)
 ScaleOption.grid(row=2, column=1)
+RatioOption.grid(row=3, column=0)
 status.pack(side=BOTTOM, fill=X)
 
 one.grid(row=0, column=0)
@@ -298,11 +391,10 @@ seven.grid(row=1, column=2)
 eight.grid(row=1, column=3)
 
 midi_activate.pack(side=BOTTOM)
-clientConfig.pack(side=BOTTOM)
+clientConfig.pack(side=BOTTOM, padx=10, pady=10)
 soloMajor.pack(side=LEFT)
 soloNew.pack(side=LEFT)
 
-# Both.pack(side=LEFT)
 
 # ---------------------- Menu Bar --------------
 
@@ -312,7 +404,8 @@ menubar = Menu(root)
 # create a pulldown menu, and add it to the menu bar
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Midi Config", command=midi_input_config)
-filemenu.add_command(label="info", command=open_info_window)
+filemenu.add_command(label="About", command=open_info_window)
+filemenu.add_command(label="Help", command=open_help_window)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="File", menu=filemenu)
