@@ -1,17 +1,19 @@
 import mido 
 import data_files as df
 from pythonosc import udp_client
-import GUI as gui
+import gui_Main as gui
+
 
 # midi_device = 'MPKmini2'
 # midi_device = 'CASIO USB-MIDI'
 
 
-def open_midi_stream(filename, midi_device, ip_Address):
+
+def open_midi_stream(filename, midi_device):
     msg = mido.Message('note_on', note=60)
     freq_scale = df.extend_scale(filename)
-    client = udp_client.SimpleUDPClient(ip_Address, 57120)
-    with mido.open_input(midi_device) as inport:
+    client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
+    with mido.open_input('MPKmini2') as inport:
         for msg in inport:
             if msg.note == 49: # 49 is C#3 which will end the stream
                 break
@@ -117,7 +119,7 @@ def open_midi_stream(filename, midi_device, ip_Address):
                     scale = gui.get_file_data(2)
                     triad = scale[1]
                     my_client.send_message("/triad", triad[1:])
-                    print("Chord 2"
+                    print("Chord 2")
             elif msg.note == 56:
                 if msg.type == "note_on":
                     scale = gui.get_file_data(3)
