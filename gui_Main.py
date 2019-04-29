@@ -74,17 +74,17 @@ def change_ratio(*args):
     ratio = RatioVariable.get()
     global GeneratorRatio
     if ratio == "3/2":
-        GeneratorRatio = 3/2 # 1.5
+        GeneratorRatio = "3/2" # 1.5
     elif ratio == "4/3":
-        GeneratorRatio = 4/3 # 1.333
+        GeneratorRatio = "4/3" # 1.333
     elif ratio == "5/4":
-        GeneratorRatio = 5/4 # 1.25
+        GeneratorRatio = "5/4" # 1.25
     elif ratio == "5/3":
-        GeneratorRatio = 5/3 # 1.667
+        GeneratorRatio = "5/3" # 1.667
     elif ratio == "9/8":
-        GeneratorRatio = 9/8 # 1.125
+        GeneratorRatio = "9/8" # 1.125
     elif ratio == "6/5":
-        GeneratorRatio = 6/5 # 1.2
+        GeneratorRatio = "6/5" # 1.2
      
 
 def change_button_state(*args):

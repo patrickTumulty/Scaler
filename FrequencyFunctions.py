@@ -60,21 +60,47 @@ def PythagoreanScale(frequency):
         EightSteps.append(note)
     return EightSteps
 
+# a = [1, 1.125, 1.266, 1.333, 1.5, 1.688, 1.898, 2] # 3/2
+# b = [1, 1.05, 1.185, 1.333, 1.5, 1.58, 1.777, 2] # 4/3
+# c = [1, 1.25, 1.27, 1.53, 1.56, 1.6, 1.95, 2] # 5/4
+# d = [1, 1.15, 1.3, 1.38, 1.6, 1.66, 1.92, 2] # 5/3
+# e = [1, 1.125, 1.266, 1.42, 1.44, 1.6, 1.8, 2] # 9/8
+# f = [1, 1.15, 1.24, 1.44, 1.49, 1.72, 1.78, 2] # 6/5
 
-def RatioScale(frequency, ratio):
-    """ Creates a diatonic scale from a generator frequency. Frequency is the first scale degree. ratio 
-    is intended to be one of the following [3/2, 4/3, 5/4, 5/3, 9/8, 6/5] """
-    scale = [frequency]
-    for i in range(6):
-        if i == 5:
-            val = (frequency * 2) * (1/round(ratio, 3))
-        else:
-            val = scale[i] * round(ratio, 3)
-        if val > frequency * 2:
-            val /= 2
-        scale.append(round(val, 2))
-    scale.append(frequency * 2)
-    scale.sort()
+
+# def RatioScale(frequency, ratio):
+    # """ Creates a diatonic scale from a generator frequency. Frequency is the first scale degree. ratio 
+    # is intended to be one of the following [3/2, 4/3, 5/4, 5/3, 9/8, 6/5] """
+    # scale = [frequency]
+    # for i in range(6):
+    #     if i == 5:
+    #         val = (frequency * 2) * (1/round(ratio, 3))
+    #     else:
+    #         val = scale[i] * round(ratio, 3)
+    #     if val > frequency * 2:
+    #         val /= 2
+    #     scale.append(round(val, 2))
+    # scale.append(frequency * 2)
+    # scale.sort()
+    # return scale
+
+def RatioScale(frequency, generatorRatio):
+    scale = []
+    if generatorRatio == "3/2":
+        ratioList = [1, 1.125, 1.266, 1.333, 1.5, 1.688, 1.898, 2]
+    elif generatorRatio == "4/3":
+        ratioList = [1, 1.05, 1.185, 1.333, 1.5, 1.58, 1.777, 2]
+    elif generatorRatio == "5/4":
+        ratioList = [1, 1.25, 1.27, 1.53, 1.56, 1.6, 1.95, 2]
+    elif generatorRatio == "5/3":
+        ratioList = [1, 1.15, 1.3, 1.38, 1.6, 1.66, 1.92, 2]
+    elif generatorRatio == "9/8":
+        ratioList = [1, 1.125, 1.266, 1.42, 1.44, 1.6, 1.8, 2]
+    elif generatorRatio == "6/5":
+        ratioList = [1, 1.15, 1.24, 1.44, 1.49, 1.72, 1.78, 2]
+    for i in range(len(ratioList)):
+        val = frequency * ratioList[i]
+        scale.append(val)
     return scale
 
 
