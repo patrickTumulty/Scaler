@@ -277,6 +277,7 @@ def saveSettings():
     global _ipAddress
     _ipAddress = ipAddressEntry.get()
     status.config(text="Device: " + inputDevice + " IP Address: " + ipAddressEntry.get())
+    client_config();
     print(_ipAddress)
 
 def midi_input_config():
@@ -332,6 +333,7 @@ def open_help_window():
 def client_config():
     global my_client
     my_client = udp_client.SimpleUDPClient(_ipAddress, 57120)
+    print("Client Config Successful")
 
 def open_midi_stream(filename, midi_device, ip_Address):
     msg = mido.Message('note_on', note=60)
@@ -500,23 +502,23 @@ centsColumn =   Label(freqList, text="Cents")
 
 numEntry =      Entry(inputFrame, width=10, relief = SUNKEN)
 OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
-showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED)
+showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED, fg="red")
 status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
 
-one =   Button(chordButtons, text="I", state=DISABLED, command = one_chord, width=8, height=3)    
-two =   Button(chordButtons, text="II", state=DISABLED, command = two_chord, width=8, height=3)
-three = Button(chordButtons, text="III", state=DISABLED, command = three_chord, width=8, height=3)
-four =  Button(chordButtons, text="IV", state=DISABLED, command = four_chord, width=8, height=3)
-five =  Button(chordButtons, text="V", state=DISABLED, command = five_chord, width=8, height=3)
-six =   Button(chordButtons, text="VI", state=DISABLED, command = six_chord, width=8, height=3)
-seven = Button(chordButtons, text="VII", state=DISABLED, command = seven_chord, width=8, height=3)
-eight = Button(chordButtons, text="VIII", state=DISABLED, command = eight_chord, width=8, height=3)
+one =   Button(chordButtons, text="I", state=DISABLED, fg="blue", command = one_chord, width=8, height=3)    
+two =   Button(chordButtons, text="II", state=DISABLED, fg="red", command = two_chord, width=8, height=3)
+three = Button(chordButtons, text="III", state=DISABLED, fg="#F3E90A", command = three_chord, width=8, height=3)
+four =  Button(chordButtons, text="IV", state=DISABLED, fg="green", command = four_chord, width=8, height=3)
+five =  Button(chordButtons, text="V", state=DISABLED, fg="purple", command = five_chord, width=8, height=3)
+six =   Button(chordButtons, text="VI", state=DISABLED, fg="orange", command = six_chord, width=8, height=3)
+seven = Button(chordButtons, text="VII", state=DISABLED, fg="cyan", command = seven_chord, width=8, height=3)
+eight = Button(chordButtons, text="VIII", state=DISABLED, fg="blue", command = eight_chord, width=8, height=3)
 
-midi_activate = Button(sendOptions, text="Start MIDI", width = 15, state=DISABLED, command=set_midi_scale)
+midi_activate = Button(sendOptions, text="Start MIDI", width = 15, fg="blue", state=DISABLED, command=set_midi_scale)
 soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major")
 soloNew =   Radiobutton(sendOptions, text="New Scale", variable=radio, value="new")
 
-clientConfig = Button(sendOptions, text="Config", width=15, command=client_config)
+# clientConfig = Button(sendOptions, text="Config", width=15, command=client_config)
 # Both =      Radiobutton(sendOptions, text="Both", variable=radio, value=)
 
 majScale = Listbox(freqList, width=10)
@@ -543,8 +545,8 @@ six.grid(row=1, column=1)
 seven.grid(row=1, column=2)
 eight.grid(row=1, column=3)
 
-midi_activate.pack(side=BOTTOM)
-clientConfig.pack(side=BOTTOM, padx=10, pady=10)
+midi_activate.pack(side=BOTTOM, padx=10, pady=10)
+# clientConfig.pack(side=BOTTOM, padx=10, pady=10)
 soloMajor.pack(side=LEFT)
 soloNew.pack(side=LEFT)
 
