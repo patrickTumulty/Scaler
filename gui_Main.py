@@ -11,7 +11,6 @@ from pythonosc import udp_client
 
 # ---------- instantiate our window ------------------
 
-
 root = Tk()
 root.title("TemperMental")
 root.resizable(width=False, height=False)
@@ -311,24 +310,6 @@ def detect_midi():
         devices.append(item)
     return devices
 
-def open_info_window():
-    info = Tk()
-    info.title("About")
-    prog_file = open("ProgramInfo.txt", "r")
-    words = prog_file.read()
-    infoLabel = Label(info, text=words)
-    infoLabel.pack(padx=10, pady=10)
-    info.mainloop()
-
-def open_help_window():
-    info = Tk()
-    info.title("Help Window")
-    prog_file = open("HelpInfo.txt", "r")
-    words = prog_file.read()
-    infoLabel = Label(info, text=words)
-    infoLabel.pack(padx=10, pady=10)
-    info.mainloop()
-
 
 def client_config():
     global my_client
@@ -505,14 +486,14 @@ OctaveDivider = Entry(inputFrame, width=10, state=DISABLED)
 showButton =    Button(inputFrame, text="Show", command=addToList, state=DISABLED, fg="red")
 status =        Label(root, text="Welcome!", bd=1, relief=SUNKEN, anchor=W)
 
-one =   Button(chordButtons, text="I", state=DISABLED, fg="blue", command = one_chord, width=8, height=3)    
+one =   Button(chordButtons, text="I", state=DISABLED, fg="black", command = one_chord, width=8, height=3)    
 two =   Button(chordButtons, text="II", state=DISABLED, fg="red", command = two_chord, width=8, height=3)
-three = Button(chordButtons, text="III", state=DISABLED, fg="#F3E90A", command = three_chord, width=8, height=3)
+three = Button(chordButtons, text="III", state=DISABLED, fg="blue", command = three_chord, width=8, height=3)
 four =  Button(chordButtons, text="IV", state=DISABLED, fg="green", command = four_chord, width=8, height=3)
 five =  Button(chordButtons, text="V", state=DISABLED, fg="purple", command = five_chord, width=8, height=3)
 six =   Button(chordButtons, text="VI", state=DISABLED, fg="orange", command = six_chord, width=8, height=3)
 seven = Button(chordButtons, text="VII", state=DISABLED, fg="cyan", command = seven_chord, width=8, height=3)
-eight = Button(chordButtons, text="VIII", state=DISABLED, fg="blue", command = eight_chord, width=8, height=3)
+eight = Button(chordButtons, text="VIII", state=DISABLED, fg="black", command = eight_chord, width=8, height=3)
 
 midi_activate = Button(sendOptions, text="Start MIDI", width = 15, fg="blue", state=DISABLED, command=set_midi_scale)
 soloMajor = Radiobutton(sendOptions, text="12 TET", variable=radio, value="major")

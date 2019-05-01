@@ -1,19 +1,17 @@
-//Jason Krasavage
-//Going to use some of the info on this link to figure out syncing osc messages with arguments and passing those into synthdefs etc.
-//https://theseanco.github.io/howto_co34pt_liveCode/6-2-OSC-and-Data-Streams/
 
+// Patrick Tumulty
+// Jason Krasavage
+// The Sonic Experince SP19
 
-NetAddr.localAddr //usually returns "a NetAddr(127.0.0.1, 57120)"
-
-n = NetAddr.new("127.0.0.1", 57120); //redundant, can use "NetAddr.localAddr" instead
-
-o = OSCFunc({ arg msg, time, addr, recvPort; [msg, time, addr, recvPort].postln; }, '/goodbye', n);
-
-OSCFunc.trace(true); //lets you see the OSC stream for ALL ports (so it won't filter out the /status.reply messages, after running this and running the BlockParser.py script you will see the osc messages in the Post window for bass, melody, and chords
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-// This whole fucntion here is supposed to filter out the /status.reply messages, but doesn't...
 (
+//Run this first
+NetAddr.localAddr; //Check listening port
+n = NetAddr.new("127.0.0.1", 57120); // Run this to create net address object
+o = OSCFunc({ arg msg, time, addr, recvPort; [msg, time, addr, recvPort].postln; }, '/goodbye', n);
+)
+
+(
+//Run this second to monitor OSC messages in print window
 f = { |msg, time, addr|
     if(msg[0] != '/status.reply') {
         "time: % sender: %\nmessage: %\n".postf(time, addr, msg);
@@ -22,9 +20,61 @@ f = { |msg, time, addr|
 thisProcess.addOSCRecvFunc(f);
 );
 
-////////////////////////////////////////////////////////////////////////////////////////////////
 
-// stop posting.
-thisProcess.removeOSCRecvFunc(f);
 
-o.free;
+(
+//Run this third
+SynthDef(\sines, {arg out = 0, freq = 440, release_dur, gate =1, amp = 0.05;
+    var sines, env;
+    env = EnvGen.kr(Env.asr(0.01, amp, release_dur), gate, doneAction:2);
+    sines = SinOsc.ar(freq, 0, 1);
+	Out.ar([0,1], sines * env);
+}).add;
+)
+
+(
+//Run this fourth
+SynthDef(\piano, { |out=0, freq=440, gate=1|
+    var son = MdaPiano.ar(freq, gate, release: 0.9, stereo: 0.3, sustain: 0);
+    DetectSilence.ar(son, 0.01, doneAction:2);
+    Out.ar(out, son * 0.1);
+}).add;
+)
+
+(
+//Run this fifth
+OSCdef.new(\triad,
+    {
+
+        |msg|
+		~one.free; ~two.free; ~three.free;
+		~one = Synth.new(\sines, [\freq, msg[1]]);
+		~two = Synth.new(\sines, [\freq, msg[2]]);
+		~three = Synth.new(\sines, [\freq, msg[3]]);
+}, '/triad')
+)
+
+
+(
+//Run this sixth
+OSCdef.new(\noteOn,
+    {
+
+        |msg|
+		t.free;
+		t = Synth.new(\piano, [\freq, msg[1]]);
+}, '/noteOn')
+)
+(
+//Run this seventh
+OSCdef.new(\noteOff,
+    {
+		t.free;
+}, '/noteOff')
+)
+
+
+(
+//Run this to manually stop chords
+~one.free; ~two.free; ~three.free;
+)
