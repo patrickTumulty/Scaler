@@ -70,14 +70,17 @@ New Scale at anytime to compare the difference.
 Start Midi
 --------------------------------------------
 
-The START MIDI button works after the steps listed above have already been completed. 
-Once selected you can now start to play your midi keyboard in the scale that you have
+The START MIDI button works after the steps listed above have already been completed.
+
+Once selected, you can now start to play your midi keyboard in the scale that you have
 designated (Note: This will be monophonic). Regardless of the scale, the 8 frequencies 
 displayed in your list will map to all the white keys from C3 to C5. 
-Starting at C3 will be the frequency that you entered above to generate your scale from.
-The black keys have a different function on the keyboard than usual. From D#3 to G#4 you can use 
+C3 will be set to the frequency that you entered above to generate your scale.
+
+The black keys are used to control what chords are being played. From D#3 to G#4 you can use 
 the black keys to change between the different chords of the scale. (Note: The black keys in this range
-performs the same function as the white buttons in the main program. We've just made them accessible
+performs the same function as the eight chord buttons in the main program. Assigning
+them to the black keys has simply made them accessible
 during real time midi playback). To silence the chords simply press A#4.  
 
 You will note that after you engage START MIDI, the program will be unresponsive. To end midi playback 
@@ -88,8 +91,12 @@ Dependencies:
 --------------------------------------------
 
 pythonosc
+
 SuperCollider
+
 Python 3
+
 Tkinter
+
 Mido
 

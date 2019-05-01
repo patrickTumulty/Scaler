@@ -323,6 +323,7 @@ def open_midi_stream(filename, midi_device, ip_Address):
     with mido.open_input(midi_device) as inport:
         for msg in inport:
             if msg.note == 49: # 49 is C#3 which will end the stream
+                my_client.send_message("/triad", [0,0,0]) 
                 break
             elif msg.note == 48:
                 if msg.type == "note_on":
