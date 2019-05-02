@@ -2,7 +2,6 @@ from tkinter import*
 import FrequencyFunctions as ff
 import data_files as df
 import tkinter.messagebox
-import python_midi
 import mido
 from pythonosc import udp_client
 
@@ -541,8 +540,6 @@ menubar = Menu(root)
 # create a pulldown menu, and add it to the menu bar
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Midi Config", command=midi_input_config)
-filemenu.add_command(label="About", command=open_info_window)
-filemenu.add_command(label="Help", command=open_help_window)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="File", menu=filemenu)
