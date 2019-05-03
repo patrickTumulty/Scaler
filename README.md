@@ -55,29 +55,34 @@ Now you will be able to open up the following file.
 
 OSCRecieve.sc
 
-Once opened, follow the instructions to set up the synth def. 
+Once opened, follow the instructions in OSCRecieve.sc to set up the sound engine. 
 
 Step Two:
 
 In the top hand corner select
 
-File > Midi Config
+File >> Midi / OSC Config
 
 Once in this window select your midi device form the drop down menu
-and enter in your IP Address. Once completed click and save and then exit the window. 
-You should notice now in the bottom bar your midi device and IP Address. 
+and enter in the IP Address where you want to send your signals. 
+Once completed click the SAVE SETTINGS button and then exit the window. 
+You should notice now, on the main interface, in the bottom status bar your midi device and IP Address. 
+This confirms that you have entered all your information correctly.
+
+Pressing the SAVE SETTINGS button also sets up your OSC Client. 
 
 Step Three:
 
-Click on the CONFIG button to step up your OSC Client. 
-
 At this point you should already have a scale selected. 
 
-Next select either 12 TET or New Scale (This will change which scale is being sonified)
+At the bottom of the main interface you will see two buttons labled 12 TET and New Scale.
+These two buttons let you toggle between which scale you would like to sonify. 
 
 You should notice now that the 8 roman numeral buttons are no longer greyed out. Assuming 
-that your SuperCollider server has been instantiated you can now select the 8 roman numeral 
-buttons to begin hearing the chords 1 - 8 of your scale. You can change between 12TET or 
+that your SuperCollider server is running and you have instantiated the appropriate code blocks
+in the OSCReceive.sc file, you can now select the 8 roman numeral 
+buttons to begin hearing the chords 1 - 8 of your scale. 
+You can change between 12TET or 
 New Scale at anytime to compare the difference. 
 (Note: Changing from 12TET to New Scale wont take effect until you select a new chord or the same chord again)
 

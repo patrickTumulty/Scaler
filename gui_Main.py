@@ -11,7 +11,7 @@ from pythonosc import udp_client
 # ---------- instantiate our window ------------------
 
 root = Tk()
-root.title("TemperMental")
+root.title("Scaler")
 root.resizable(width=False, height=False)
 root.config()
 
@@ -282,7 +282,7 @@ def midi_input_config():
     midi_setup_window = Tk()
     set_up_screen = Frame(midi_setup_window)
     global ipAddressEntry
-    midi_setup_window.title("Midi Setup")
+    midi_setup_window.title("Midi / OSC Setup")
     midiLabel = Label(set_up_screen, text="Select MIDI Input:", width=20)
     ipLabel = Label(set_up_screen, text="IP Address:", width=20)
     localIP = Label(set_up_screen, text="For Local Machine: 127.0.0.1")
@@ -315,9 +315,10 @@ def client_config():
     my_client = udp_client.SimpleUDPClient(_ipAddress, 57120)
     print("Client Config Successful")
 
-def open_midi_stream(filename, midi_device, ip_Address):
+
+def open_midi_stream(two_octave_scale, midi_device, ip_Address):
     msg = mido.Message('note_on', note=60)
-    freq_scale = df.extend_scale(filename)
+    freq_scale = two_octave_scale
     client = udp_client.SimpleUDPClient(ip_Address, 57120)
     with mido.open_input(midi_device) as inport:
         for msg in inport:
@@ -539,7 +540,7 @@ menubar = Menu(root)
 
 # create a pulldown menu, and add it to the menu bar
 filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="Midi Config", command=midi_input_config)
+filemenu.add_command(label="Midi / OSC Config", command=midi_input_config)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="File", menu=filemenu)

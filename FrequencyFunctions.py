@@ -85,6 +85,10 @@ def PythagoreanScale(frequency):
     # return scale
 
 def RatioScale(frequency, generatorRatio):
+    """ RatioScale takes a starting frequency and a generator ratio and returns an array of frequencies.
+    Frequency can be any number. generatorRatio takes one of the following strings 
+    "3/2", "4/3", "5/4", "5/3", "9/8", 6/5"
+    """
     scale = []
     if generatorRatio == "3/2":
         ratioList = [1, 1.125, 1.266, 1.333, 1.5, 1.688, 1.898, 2]
