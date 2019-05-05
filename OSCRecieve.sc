@@ -32,10 +32,19 @@ SynthDef(\sines, {arg out = 0, freq = 440, release_dur, gate =1, amp = 0.05;
 }).add;
 )
 
-(
+/*(
 //Run this fourth
 SynthDef(\piano, { |out=0, freq=440, gate=1|
     var son = MdaPiano.ar(freq, gate, release: 0.9, stereo: 0.3, sustain: 0);
+    DetectSilence.ar(son, 0.01, doneAction:2);
+    Out.ar(out, son * 0.1);
+}).add;
+)*/
+
+(
+//Run this fourth
+SynthDef(\piano, { |out=0, freq=440, gate=1|
+    var son = SinOsc.ar(freq);
     DetectSilence.ar(son, 0.01, doneAction:2);
     Out.ar(out, son * 0.1);
 }).add;

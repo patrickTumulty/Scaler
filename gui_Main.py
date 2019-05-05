@@ -87,26 +87,15 @@ def change_ratio(*args):
 
 def change_button_state(*args):
     """ Function waits for user to choose which scale they want to sonify and then activates the buttons  """
-    if radio.get() == "major":
-        print("12TET")
-        one.config(state=NORMAL)
-        two.config(state=NORMAL)
-        three.config(state=NORMAL)
-        four.config(state=NORMAL)
-        five.config(state=NORMAL)
-        six.config(state=NORMAL)
-        seven.config(state=NORMAL)
-        eight.config(state=NORMAL)
-    elif radio.get() == "new":
-        print("New Scale")
-        one.config(state=NORMAL)
-        two.config(state=NORMAL)
-        three.config(state=NORMAL)
-        four.config(state=NORMAL)
-        five.config(state=NORMAL)
-        six.config(state=NORMAL)
-        seven.config(state=NORMAL)
-        eight.config(state=NORMAL)
+    one.config(state=NORMAL)
+    two.config(state=NORMAL)
+    three.config(state=NORMAL)
+    four.config(state=NORMAL)
+    five.config(state=NORMAL)
+    six.config(state=NORMAL)
+    seven.config(state=NORMAL)
+    eight.config(state=NORMAL)
+       
 
 
 def assign_midi(*args):
@@ -118,7 +107,7 @@ def assign_midi(*args):
 
 variable.trace('w', change_state) #checks to see which option has been selected
 midiString.trace('w', assign_midi)
-radio.trace('w', change_button_state)
+# radio.trace('w', change_button_state)
 RatioVariable.trace('w', change_ratio)
 
 
@@ -220,11 +209,9 @@ def set_midi_scale():
         scale = df.read_data("MajorScale.txt")
         Two_Oct = df.extend_scale(scale)
         open_midi_stream(Two_Oct, inputDevice, _ipAddress)
-        # python_midi.open_midi_stream(Two_Oct, inputDevice, _ipAddress)
     elif radio.get() == "new":
         scale = df.read_data("OtherScale.txt")
         Two_Oct = df.extend_scale(scale)
-        # python_midi.open_midi_stream(Two_Oct, inputDevice, _ipAddress)
         open_midi_stream(Two_Oct, inputDevice, _ipAddress)
 
 
@@ -275,7 +262,8 @@ def saveSettings():
     global _ipAddress
     _ipAddress = ipAddressEntry.get()
     status.config(text="Device: " + inputDevice + " IP Address: " + ipAddressEntry.get())
-    client_config();
+    client_config()
+    change_button_state()
     print(_ipAddress)
 
 def midi_input_config():
