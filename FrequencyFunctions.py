@@ -1,9 +1,7 @@
-import numpy as np
 import math
 import random 
 
 # PATRICK TUMULTY
-# Last Updated: Fed 28, 2019
 
 def Create12TETChromatic(frequency):
     """creates a 12 tone even tempered scale with any starting pitch. returns an array"""
