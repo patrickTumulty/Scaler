@@ -1,4 +1,4 @@
-# TheSonicExperience
+# Scaler - The Sonic Experience
 
 About:
 --------------------------------------------
